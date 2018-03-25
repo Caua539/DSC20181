@@ -67,6 +67,15 @@ public class GameMain
 
   public static void main(String[] args)
   {
-    EventQueue.invokeLater(new GameMain.1());
+    EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					GameMain frame = new GameMain();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
   }
 }

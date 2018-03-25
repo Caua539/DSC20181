@@ -3,12 +3,9 @@ package gamecontroller;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JLabel;
+import java.awt.event.MouseAdapter;
 
-
-
-
-
-
+@SuppressWarnings("serial")
 public class Celula
   extends JLabel
 {
@@ -25,11 +22,12 @@ public class Celula
     setHorizontalAlignment(0);
     setFont(new Font("Tahoma", 0, 80));
     setBounds(122 * row, 122 * col, 121, 121);
-    addMouseListener(new Celula.1(this, frame));
-    
-
-
-
+    addMouseListener(new MouseAdapter() {
+      @Override
+      public void mousePressed(MouseEvent arg0) {
+        frame.warden(Celula.this);
+      }
+    });
 
     clear();
   }

@@ -5,11 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-
-
-
-
-
+@SuppressWarnings("serial")
 public class Quadro
   extends JPanel
 {
