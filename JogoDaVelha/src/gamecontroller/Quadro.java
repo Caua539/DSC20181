@@ -87,7 +87,10 @@ public class Quadro extends JPanel {
 	  
 		  for (int i=0; i < GameMain.ROWS; i++) {
 			  for (int j=GameMain.COLS-1; j >= 0; j--) {
-				  celulas[i][j].setWin();
+				  if (i + j == 2) {
+					  celulas[i][j].setWin();
+				  }
+
 			  }
 		  }
 	  
