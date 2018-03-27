@@ -6,36 +6,38 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
-public class Quadro
-  extends JPanel
-{
+public class Quadro extends JPanel {
+	
   Celula[][] celulas;
   JLabel lblNewLabel;
   
-  public Quadro(GameMain frame)
-  {
+  // CONSTRUTOR
+  public Quadro(GameMain frame) {
+	  
     celulas = new Celula[3][3];
     for (int row = 0; row < 3; row++) {
       for (int col = 0; col < 3; col++) {
         celulas[row][col] = new Celula(row, col, frame);
       }
     }
-    desenhar(frame);
+    drawGame(frame);
   }
   
-  public void init()
-  {
-    for (int row = 0; row < 3; row++) {
-      for (int col = 0; col < 3; col++) {
+  // Limpa o quadro
+  public void start() {
+	  
+    for (int row = 0; row < GameMain.ROWS; row++) {
+      for (int col = 0; col < GameMain.COLS; col++) {
         celulas[row][col].clear();
       }
     }
   }
   
-  public boolean isDraw()
-  {
-    for (int row = 0; row < 3; row++) {
-      for (int col = 0; col < 3; col++) {
+  // Teste pra empate
+  public boolean isDraw() {
+	  
+    for (int row = 0; row < GameMain.ROWS; row++) {
+      for (int col = 0; col < GameMain.COLS; col++) {
         if (celulas[row][col].content == Seed.VAZIO) {
           return false;
         }
@@ -45,28 +47,61 @@ public class Quadro
   }
   
 
-  public boolean hasWon(Seed seed, int seedRow, int seedCol)
-  {
-    return ((celulas[seedRow][0].content == seed) && 
-      (celulas[seedRow][1].content == seed) && 
-      (celulas[seedRow][2].content == seed)) || 
-      ((celulas[0][seedCol].content == seed) && 
-      (celulas[1][seedCol].content == seed) && 
-      (celulas[2][seedCol].content == seed)) || 
-      ((seedRow == seedCol) && 
-      (celulas[0][0].content == seed) && 
-      (celulas[1][1].content == seed) && 
-      (celulas[2][2].content == seed)) || (
-      (seedRow + seedCol == 2) && 
-      (celulas[0][2].content == seed) && 
-      (celulas[1][1].content == seed) && 
-      (celulas[2][0].content == seed));
+  // Teste pra vitória
+  public boolean hasWon(Seed seed, int seedRow, int seedCol) {
+	  // Horizontal
+	  if ((celulas[seedRow][0].content == seed) && 
+			(celulas[seedRow][1].content == seed) && 
+			(celulas[seedRow][2].content == seed)) {
+		  
+		  for (int i=0; i < GameMain.COLS; i++) {
+			  celulas[seedRow][i].setWin();
+		  }
+		  return true;
+	    // Vertical
+	  } else if ((celulas[0][seedCol].content == seed) && 
+			  		(celulas[1][seedCol].content == seed) && 
+			  		(celulas[2][seedCol].content == seed)) {
+			  
+			  for (int i=0; i < GameMain.ROWS; i++) {
+				  celulas[i][seedCol].setWin();
+			  }
+			  
+			  return true;
+		// Diagonal esquerda-direita
+	  } else if ((seedRow == seedCol) && 
+			  		(celulas[0][0].content == seed) && 
+			  		(celulas[1][1].content == seed) && 
+			  		(celulas[2][2].content == seed)) {
+		  
+		  for (int i=0; i < GameMain.ROWS; i++) {
+			  celulas[i][i].setWin();
+		  }
+		  
+		  return true;
+		// Diagonal direita-esquerda
+	  } else if ((seedRow + seedCol == 2) && 
+			  (celulas[0][2].content == seed) && 
+			  (celulas[1][1].content == seed) && 
+			  (celulas[2][0].content == seed)) {
+	  
+		  for (int i=0; i < GameMain.ROWS; i++) {
+			  for (int j=GameMain.COLS-1; j >= 0; j--) {
+				  celulas[i][j].setWin();
+			  }
+		  }
+	  
+		  return true;
+	  }
+	  
+	  return false;
+	  
   }
-  
 
 
-  public void desenhar(JFrame frame)
-  {
+  // Desenha o quadro de jogo
+  public void drawGame(JFrame frame) {
+	  
     setBackground(Color.WHITE);
     setForeground(Color.GRAY);
     frame.setContentPane(this);
@@ -118,6 +153,7 @@ public class Quadro
     add(lblNewLabel);
   }
   
+  // Muda o texto inferior
   public void setBottomLabel(String text) {
     lblNewLabel.setText(text);
   }

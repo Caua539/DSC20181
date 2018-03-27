@@ -7,15 +7,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 @SuppressWarnings("serial")
-public class Celula
-  extends JLabel
-{
+public class Celula extends JLabel {
   Seed content;
   int row;
   int col;
   
-  public Celula(int row, int col, GameMain frame)
-  {
+  // CONSTRUTOR
+  public Celula(int row, int col, GameMain frame) {
     this.row = row;
     this.col = col;
     
@@ -23,24 +21,30 @@ public class Celula
     setHorizontalAlignment(0);
     setFont(new Font("Tahoma", 0, 80));
     setBounds(122 * row, 122 * col, 121, 121);
+    
+    // Se essa célula for clicada, avisa o controlador do jogo
     addMouseListener(new MouseAdapter() {
       @Override
       public void mousePressed(MouseEvent arg0) {
-        frame.warden(Celula.this);
+        frame.gameMaster(Celula.this);
       }
     });
 
     clear();
   }
   
-  public void clear()
-  {
+  // Limpa célula
+  public void clear() {
+	  
     content = Seed.VAZIO;
-    desenhar();
+    this.setOpaque(false);
+	this.setBackground(Color.WHITE);
+    draw();
   }
   
-  public void desenhar()
-  {
+  // Desenha X, Bola ou nada na célula
+  public void draw() {
+	  
     if (content == Seed.X) {
       setForeground(Color.RED);
       setText(content.getValorseed());
@@ -52,13 +56,19 @@ public class Celula
     }
   }
   
+  // Deixa a célula verde
+  public void setWin() {
+	  this.setOpaque(true);
+	  this.setBackground(Color.GREEN);
+  }
+  
   public Seed getContent() {
     return content;
   }
   
   public void setContent(Seed cont) {
     content = cont;
-    desenhar();
+    draw();
   }
   
   public int getRow() {
